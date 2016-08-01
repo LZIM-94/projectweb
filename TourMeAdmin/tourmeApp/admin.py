@@ -4,9 +4,14 @@ from tourmeApp.models import Attraction
 from tourmeApp.models import Tour
 from tourmeApp.models import Artist
 from tourmeApp.models import AttractionImage
+from tourmeApp.models import BuildingMap
 
 class AttractionImageInline(admin.TabularInline):
     model = AttractionImage
+    readonly_fields = ( 'image_tag', )
+
+class BuildingMapInline(admin.TabularInline):
+    model = BuildingMap
     readonly_fields = ( 'image_tag', )
 
 
@@ -16,7 +21,7 @@ class AttractionAdmin(admin.ModelAdmin):
                  ('Информация', {'fields': ['ShortInfo','AdvancedInfo','Artists'], 'classes': ['collapse']}),
                  ('Медиа-инфо', {'fields': ['MainPictureSource','image_tag','AudioGuideSource'], 'classes': ['collapse']}),
                  ('Координаты на глобальной карте', {'fields': ['MapCoordinates']}),
-                  ('Карта здания', {'fields': ['BuildingMapSource'], 'classes': ['collapse']}),
+                 # ('Карта здания', {'fields': ['BuildingMapSource'], 'classes': ['collapse']}),
                   ('Кординаты на карте здания', {'fields': ['AttractionRoot','xCoord_OnBuildMap','yCoord_OnBuildMap'], 'classes': ['collapse']}),
                   ('Зона в помещении (зал,комната)', {'fields': ['BuildMapZone']}),
                   ('3D модель', {'fields': ['Model3D']})
@@ -24,7 +29,7 @@ class AttractionAdmin(admin.ModelAdmin):
     list_display = ('Title', 'Category')
     search_fields = ['Title']
     readonly_fields = ( 'image_tag', )
-    inlines = [AttractionImageInline]
+    inlines = [AttractionImageInline,BuildingMapInline]
 
 class TourAdmin(admin.ModelAdmin):
     list_display = ('Title','Count_of_attraction')
