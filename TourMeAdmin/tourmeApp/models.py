@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 from django.db import models
 from geoposition.fields import GeopositionField
 from django.utils.safestring import mark_safe
+from datetime import date
 import os
 
 def upload_path_handler(instance, filename):
@@ -18,6 +19,7 @@ def upload_mainimage_path_handler(instance, filename):
 
 class Artist(models.Model):
     id = models.AutoField(primary_key=True)
+    mod_date = models.DateTimeField("Дата обновления",auto_now_add=True,editable = False)
     Title = models.CharField("Имя автора",max_length=128)
     ShortInfo = models.TextField("Краткая информация об авторе",blank=True)
     Wiki_Link = models.URLField("Ссылка на страницу в Википедии",blank=True)
@@ -56,6 +58,7 @@ def upload_3d_path_handler(instance, filename):
 
 class Attraction(models.Model):
     id = models.AutoField(primary_key=True)
+    mod_date = models.DateTimeField("Дата обновления",auto_now_add=True,editable = False)
     TYPE_CHOICES = (
         (0, 'Объект на мировой карте'),
         (1, 'Объект на карте в помещении'),
@@ -99,6 +102,7 @@ def upload_mainimage_path_handler(instance, filename):
 
 class Tour(models.Model):
     id = models.AutoField(primary_key=True)
+    mod_date = models.DateTimeField("Дата обновления",auto_now_add=True,editable = False)
     Title = models.CharField("Название тура",max_length=128)
     ShortInfo = models.TextField("Краткая информация о туре",blank=True)
     AdvancedInfo = models.TextField("Подробная информация о туре",blank=True)
@@ -126,6 +130,7 @@ class AttractionImage(models.Model):
    
     attraction = models.ForeignKey('Attraction', related_name='images')
     image = models.ImageField(upload_to = upload_image_path_handler)
+    description = models.TextField("Описание фото",blank=True)
     
     def image_tag(self):
         return  mark_safe(u'<style> .imgstyle {   height: auto; width: auto;  max-width: 300px; max-height: 300px;  } </style> <img src="%s" class =  "imgstyle" ></img>' % (self.image.url))
